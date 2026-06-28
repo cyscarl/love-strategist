@@ -12,6 +12,7 @@ from PyQt5.QtGui import QFont
 
 from src.utils.config import load_config, save_config, reload_config
 from src.utils.logger import LOG_DIR, logger
+from src.utils.config import DATA_DIR
 from src.utils.thread_utils import debounce_button
 from src.services.llm_service import test_connection, list_models
 
@@ -255,6 +256,12 @@ class SettingsDetail(QWidget):
         open_btn.setStyleSheet(f"QPushButton{{background:{C_BG}; color:{C_TEXT}; border:1px solid {C_BORDER}; border-radius:4px; padding:8px 16px; font-size:18px;}} QPushButton:hover{{background:#F5F5F5;}}")
         open_btn.clicked.connect(lambda: os.startfile(LOG_DIR) if hasattr(os, 'startfile') else None)
         layout.addWidget(open_btn)
+
+        data_btn = QPushButton("打开数据目录")
+        data_btn.setCursor(Qt.PointingHandCursor)
+        data_btn.setStyleSheet(f"QPushButton{{background:{C_BG}; color:{C_TEXT}; border:1px solid {C_BORDER}; border-radius:4px; padding:8px 16px; font-size:18px;}} QPushButton:hover{{background:#F5F5F5;}}")
+        data_btn.clicked.connect(lambda: os.startfile(DATA_DIR) if hasattr(os, 'startfile') else None)
+        layout.addWidget(data_btn)
         layout.addStretch()
         return page
 

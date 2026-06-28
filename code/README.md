@@ -1,4 +1,4 @@
-# 恋爱军师 - Love Strategist
+# Love Strategist
 
 基于大模型 API 驱动的聊天辅助工具，分析与目标对象的聊天记录，生成高情商回复建议。
 
