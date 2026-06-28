@@ -12,7 +12,9 @@ from PyQt5.QtWidgets import (
     QMainWindow, QSplitter, QWidget, QVBoxLayout, QStackedWidget,
     QInputDialog, QApplication,
 )
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QPoint
+from PyQt5.QtGui import QPainterPath
+import ctypes
 
 from .styles import GLOBAL_QSS
 from .navigation_bar import NavigationBar
@@ -266,6 +268,9 @@ class MainWindow(QMainWindow):
             "avatar_path": contact.avatar if contact and sender == SenderType.TARGET else self_avatar,
         })
         self._input_panel.clear_input()
+
+        # 刷新气泡宽度
+        QTimer.singleShot(10, self._chat_area.refresh_all_bubbles)
 
         # 更新聊天列表预览并置顶 + 持久化排序（刷新 updated_at）
         if contact:
@@ -608,6 +613,41 @@ class MainWindow(QMainWindow):
 
     def _on_config_saved(self) -> None:
         pass
+
+    # ==================================================================
+    # Windows 原生边缘缩放（WM_NCHITTEST）
+    # ==================================================================
+
+    def nativeEvent(self, eventType, message):
+        """处理 Windows 原生消息，让无框窗口支持边缘拖拽缩放。"""
+        if eventType == "windows_generic_MSG":
+            mw = ctypes.wintypes.MSG.from_address(int(message))
+            if mw.message == 0x0084:  # WM_NCHITTEST
+                x = mw.pt.x
+                y = mw.pt.y
+                pt = self.mapFromGlobal(QPoint(x, y))
+                m = 6
+                left = pt.x() <= m
+                right = pt.x() >= self.width() - m
+                top = pt.y() <= m
+                bottom = pt.y() >= self.height() - m
+                if top and left: return True, 13
+                if top and right: return True, 14
+                if bottom and left: return True, 16
+                if bottom and right: return True, 17
+                if left: return True, 10
+                if right: return True, 11
+                if top: return True, 12
+                if bottom: return True, 15
+        return False, 0
+
+    def resizeEvent(self, event) -> None:
+        """窗口大小变化时重新应用四角圆角遮罩。"""
+        super().resizeEvent(event)
+        from PyQt5.QtGui import QRegion
+        path = QPainterPath()
+        path.addRoundedRect(0, 0, self.width(), self.height(), 12, 12)
+        self.setMask(QRegion(path.toFillPolygon().toPolygon()))
 
     def _on_balance_updated(self, text: str) -> None:
         self._title_bar._balance_label.setText(text)

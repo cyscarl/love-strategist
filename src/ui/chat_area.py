@@ -76,6 +76,9 @@ class ChatArea(QWidget):
         try:
             bubble = self._create_bubble(msg)
             item = QListWidgetItem()
+            # 确保气泡宽度在布局完成后再计算
+            bubble.set_max_width(self._calc_max_width())
+            bubble._apply_label_width()
             item.setSizeHint(bubble.sizeHint())
             self.list_widget.addItem(item)
             self.list_widget.setItemWidget(item, bubble)
@@ -88,6 +91,8 @@ class ChatArea(QWidget):
         """在顶部批量插入历史消息。"""
         for msg in reversed(msgs):
             bubble = self._create_bubble(msg)
+            bubble.set_max_width(self._calc_max_width())
+            bubble._apply_label_width()
             item = QListWidgetItem()
             item.setSizeHint(bubble.sizeHint())
             self.list_widget.insertItem(0, item)

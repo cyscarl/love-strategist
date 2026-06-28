@@ -112,6 +112,8 @@ class InputPanel(QWidget):
         self.text_edit = QTextEdit()
         self.text_edit.setPlaceholderText("输入消息...")
         self.text_edit.setFixedHeight(168)
+        self.text_edit.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.text_edit.customContextMenuRequested.connect(self._show_text_menu)
         self.text_edit.setFont(QFont("Microsoft YaHei", 20))
         self.text_edit.setStyleSheet(f"""
             QTextEdit {{
@@ -222,6 +224,30 @@ class InputPanel(QWidget):
         texts = getattr(self, '_suggestion_texts', [])
         if idx < len(texts):
             self.suggestion_selected.emit(texts[idx])
+
+    def _show_text_menu(self, pos) -> None:
+        """中文右键菜单。"""
+        from PyQt5.QtWidgets import QMenu
+        menu = QMenu(self)
+        menu.setStyleSheet("QMenu { background:#FFF; border:1px solid #E5E5E5; border-radius:4px; padding:4px 0; } QMenu::item { padding:6px 24px; font-size:18px; } QMenu::item:selected { background:#E8F8EF; color:#07C160; }")
+        te = self.text_edit
+        for text, slot, shortcut in [
+            ("撤销", te.undo, "Ctrl+Z"),
+            ("重做", te.redo, "Ctrl+Y"),
+            (None, None, None),
+            ("剪切", te.cut, "Ctrl+X"),
+            ("复制", te.copy, "Ctrl+C"),
+            ("粘贴", te.paste, "Ctrl+V"),
+            ("删除", lambda: te.textCursor().removeSelectedText(), "Delete"),
+            (None, None, None),
+            ("全选", te.selectAll, "Ctrl+A"),
+        ]:
+            if text is None:
+                menu.addSeparator()
+            else:
+                a = menu.addAction(f"{text}\t{shortcut}")
+                a.triggered.connect(slot)
+        menu.exec_(self.text_edit.mapToGlobal(pos))
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.key() in (Qt.Key_Return, Qt.Key_Enter):
