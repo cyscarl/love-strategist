@@ -10,6 +10,7 @@ a = Analysis(
         ('config/config.yaml.template', 'config'),
         ('icons', 'icons'),
         ('help.html', '.'),
+        ('pyproject.toml', '.'),
     ],
     hiddenimports=[
         'PyQt5.sip',

@@ -42,7 +42,7 @@ def check_github_update(repo_url: str, current_version: str) -> dict | None:
         resp = requests.get(api_url, headers={
             "Accept": "application/vnd.github+json",
             "User-Agent": "LoveStrategist",
-        }, timeout=8)
+        }, timeout=8, verify=False)
 
         if resp.status_code != 200:
             logger.warning(f"GitHub API 返回 {resp.status_code}: {resp.text[:100]}")
@@ -106,7 +106,7 @@ def download_and_update(zip_url: str, callback=None) -> tuple[bool, str]:
         if callback:
             callback("下载中...")
 
-        resp = requests.get(zip_url, headers={"User-Agent": "LoveStrategist"}, timeout=120, stream=True)
+        resp = requests.get(zip_url, headers={"User-Agent": "LoveStrategist"}, timeout=120, stream=True, verify=False)
         if resp.status_code != 200:
             return False, f"下载失败 (HTTP {resp.status_code})"
 
