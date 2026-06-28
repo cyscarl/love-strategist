@@ -1,6 +1,6 @@
 [project]
 name = "love-strategist"
-version = "0.1.0"
+version = "0.2.0"
 description = "聊天辅助工具 - 基于大模型的高情商回复建议"
 requires-python = ">=3.9"
 dependencies = [
