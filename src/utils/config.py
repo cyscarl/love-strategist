@@ -48,7 +48,11 @@ PROJECT_ROOT = _get_project_root()
 CODE_DIR = _get_code_dir()
 CONFIG_DIR = os.path.join(PROJECT_ROOT, "config")
 CONFIG_PATH = os.path.join(CONFIG_DIR, "config.yaml")
-TEMPLATE_PATH = os.path.join(CODE_DIR, "config", "config.yaml.template")
+# 模板在 _internal/ 内（打包）或 code/config/ 内（开发）
+if getattr(sys, 'frozen', False):
+    TEMPLATE_PATH = os.path.join(sys._MEIPASS, "config", "config.yaml.template")
+else:
+    TEMPLATE_PATH = os.path.join(CODE_DIR, "config", "config.yaml.template")
 DATA_DIR = os.path.join(PROJECT_ROOT, "data")
 DB_PATH = os.path.join(DATA_DIR, "love_strategist.db")
 LOG_DIR = os.path.join(PROJECT_ROOT, "logs")
