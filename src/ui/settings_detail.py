@@ -102,7 +102,14 @@ def _set_opts_visible(layout, visible: bool) -> None:
     for i in range(layout.count()):
         w = layout.itemAt(i).widget()
         if w: w.setVisible(visible)
-HELP_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "help.html")
+def _get_help_path() -> str:
+    """获取帮助文档路径（开发/打包兼容）。"""
+    import sys
+    if getattr(sys, 'frozen', False):
+        return os.path.join(sys._MEIPASS, "help.html")
+    return os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "help.html")
+
+HELP_PATH = _get_help_path()
 
 
 class SettingsDetail(QWidget):
@@ -280,7 +287,8 @@ class SettingsDetail(QWidget):
 
         layout.addWidget(self._title("更新设置"))
         self._repo_url_input = QLineEdit()
-        self._repo_url_input.setPlaceholderText("https://github.com/你的用户名/仓库名")
+        self._repo_url_input.setReadOnly(True)
+        self._repo_url_input.setStyleSheet(f"QLineEdit{{border:1px solid {C_BORDER};border-radius:4px;padding:6px 10px;font-size:18px;background:#F5F5F5;}}")
         layout.addLayout(self._row("仓库地址", self._repo_url_input))
 
         update_btn = QPushButton("检查更新")
@@ -500,24 +508,67 @@ class SettingsDetail(QWidget):
 
     def _do_check_update(self, repo_url: str) -> None:
         from PyQt5.QtWidgets import QMessageBox
-        from src.services.update_checker import check_github_update
+        from src.services.update_checker import check_github_update, download_and_update
         result = check_github_update(repo_url, VERSION)
         if result is None:
             self._status_label.setText("")
             QMessageBox.information(self, "检查更新", "当前已是最新版本")
         elif isinstance(result, dict) and result.get("latest"):
             self._status_label.setText("")
-            reply = QMessageBox.question(
-                self, "检查更新",
-                f"检测到新版本 {result['latest']}\n\n{result.get('body', '')}\n是否前往下载？",
-                QMessageBox.Yes | QMessageBox.No
-            )
-            if reply == QMessageBox.Yes:
-                import webbrowser
-                webbrowser.open(result.get("url", repo_url + "/releases/latest"))
+            zip_url = result.get("zip_url", "")
+            if zip_url:
+                reply = QMessageBox.question(
+                    self, "检查更新",
+                    f"检测到新版本 {result['latest']}\n\n{result.get('body', '')}\n是否自动下载并更新？",
+                    QMessageBox.Yes | QMessageBox.No
+                )
+                if reply == QMessageBox.Yes:
+                    self._status_label.setText("下载中...")
+                    self._status_label.setStyleSheet(f"color:{C_HINT};font-size:17px;")
+                    from PyQt5.QtCore import QTimer
+                    QTimer.singleShot(100, lambda: self._do_download(zip_url))
+            else:
+                reply = QMessageBox.question(
+                    self, "检查更新",
+                    f"检测到新版本 {result['latest']}\n\n{result.get('body', '')}\n是否前往下载页面？",
+                    QMessageBox.Yes | QMessageBox.No
+                )
+                if reply == QMessageBox.Yes:
+                    import webbrowser
+                    webbrowser.open(result.get("url", repo_url + "/releases/latest"))
         else:
             self._status_label.setText("检查失败")
             self._status_label.setStyleSheet(f"color:{C_RED};font-size:17px;")
+
+    def _do_download(self, zip_url: str) -> None:
+        from PyQt5.QtWidgets import QMessageBox, QProgressDialog
+        from PyQt5.QtCore import QTimer
+        from src.services.update_checker import download_and_update
+
+        progress = QProgressDialog("正在下载更新...", "取消", 0, 100, self)
+        progress.setWindowTitle("更新")
+        progress.setWindowModality(Qt.WindowModal)
+        progress.setMinimumDuration(0)
+        progress.setValue(0)
+        progress.setAutoClose(False)
+        progress.canceled.connect(lambda: None)  # 不允许取消
+
+        def update_progress(msg):
+            if "%" in msg:
+                try:
+                    pct = int(msg.split("%")[0].split()[-1])
+                    progress.setValue(pct)
+                except ValueError:
+                    pass
+            progress.setLabelText(msg)
+
+        ok, msg = download_and_update(zip_url, callback=update_progress)
+        progress.close()
+
+        if ok:
+            QMessageBox.information(self, "更新", "新版本已下载完成。\n\n请关闭应用，双击运行目录下的 _update.bat 完成更新。")
+        else:
+            QMessageBox.warning(self, "更新失败", msg)
 
     def _on_help(self) -> None:
         os.makedirs(os.path.dirname(HELP_PATH), exist_ok=True)

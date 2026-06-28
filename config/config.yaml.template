@@ -56,7 +56,5 @@ skill:
     - AffinityEstimator
 
 update:
-  # GitHub 仓库地址，用于检查更新
-  repo_url: ""
-  # 启动时自动检查更新
+  repo_url: "https://github.com/cyscarl/love-strategist"
   auto_check: false

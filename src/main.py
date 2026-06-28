@@ -60,6 +60,12 @@ def main() -> None:
     app.setAttribute(Qt.AA_EnableHighDpiScaling, True)
     app.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
+    # 任务栏窗口图标
+    from PyQt5.QtGui import QIcon
+    icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "app.png") if not getattr(sys, 'frozen', False) else os.path.join(sys._MEIPASS, "icons", "app.png")
+    if os.path.exists(icon_path):
+        app.setWindowIcon(QIcon(icon_path))
+
     # 7. 依赖注入：Controller → MainWindow
     controller = ChatController()
     window = MainWindow(controller=controller)

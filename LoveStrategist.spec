@@ -9,6 +9,7 @@ a = Analysis(
     datas=[
         ('config/config.yaml.template', 'config'),
         ('icons', 'icons'),
+        ('help.html', '.'),
     ],
     hiddenimports=[
         'PyQt5.sip',
