@@ -1,0 +1,62 @@
+# ============================================================
+# Love Strategist 配置文件模板
+# 首次启动时自动复制到 ../../config/config.yaml
+# ============================================================
+
+llm:
+  # API Key（必填，从你的 LLM 供应商获取）
+  api_key: "your-api-key-here"
+
+  # API Base URL（支持 OpenAI 兼容接口，注意必须以 /v1 结尾）
+  # OpenAI:    https://api.openai.com/v1
+  # DeepSeek:  https://api.deepseek.com/v1  ← 不是 platform.deepseek.com！
+  # 智谱:      https://open.bigmodel.cn/api/paas/v4
+  # 自定义:    https://your-provider.com/v1
+  base_url: "https://api.openai.com/v1"
+
+  # 模型名称
+  model: "gpt-4"
+
+  # 请求超时（秒）
+  timeout: 30
+
+  # 最大 Token 数（单次请求）
+  max_tokens: 2048
+
+  # 温度参数（0.0-2.0，越高越随机）
+  temperature: 0.8
+
+ui:
+  # 主题：light / dark
+  theme: "light"
+
+  # 语言：zh-CN
+  language: "zh-CN"
+
+  # 窗口默认尺寸
+  window_width: 1000
+  window_height: 700
+
+skill:
+  # 近期对话窗口大小（条数）
+  recent_window: 30
+
+  # 历史摘要最大字数
+  summary_max_chars: 300
+
+  # 默认模式：silent / active
+  default_mode: "silent"
+
+  # 启用的 Skill 列表（注释掉即禁用）
+  enabled_skills:
+    - ReplyGenerator
+    - ProfileAnalyzer
+    - SentimentAnalyzer
+    - TopicSuggester
+    - AffinityEstimator
+
+update:
+  # GitHub 仓库地址，用于检查更新
+  repo_url: ""
+  # 启动时自动检查更新
+  auto_check: false

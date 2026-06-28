@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聊天助手 - 使用帮助</title>
+<style>
+  body { font-family: 'Microsoft YaHei', sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; line-height: 1.8; color: #333; background: #EDEDED; }
+  h1 { color: #07C160; border-bottom: 2px solid #07C160; padding-bottom: 8px; }
+  h2 { color: #333; margin-top: 32px; }
+  .tip { background: #E8F8EF; border-left: 4px solid #07C160; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
+  .step { background: #FFF; padding: 16px; margin: 8px 0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .step strong { color: #07C160; }
+  code { background: #F0F0F0; padding: 2px 6px; border-radius: 3px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<h1>聊天助手 使用帮助</h1>
+<p>本软件是一个聊天辅助工具。它通过人工智能分析你和对方的聊天记录，帮你生成高情商的回复建议，推进人际关系。</p>
+
+<div class="tip"><strong>简单来说：</strong>你录入聊天内容 → AI 分析对方性格和情绪 → 给你 3 条回复建议 → 你选一条发送。</div>
+
+<h2>第一步：配置 AI 服务</h2>
+<div class="step">
+  <p><strong>1.</strong> 点击左侧导航栏的 <strong>「设置」</strong>。</p>
+  <p><strong>2.</strong> 在「供应商」下拉框中选择你使用的 AI 服务商（如 DeepSeek、OpenAI）。</p>
+  <p><strong>3.</strong> 填写你的 <strong>API Key</strong>（密钥）。这是从 AI 服务商获得的，类似一串密码。</p>
+  <p><strong>4.</strong> 模型会自动填充，你也可以点击右边的 <strong>⟳</strong> 按钮刷新列表。</p>
+  <p><strong>5.</strong> 点击 <strong>「保存配置」</strong>，然后点击 <strong>「测试连接」</strong>。如果看到"连接成功"，说明配置正确。</p>
+</div>
+
+<div class="tip">
+  <strong>在哪里获取 API Key？</strong><br>
+  · DeepSeek：访问 platform.deepseek.com → 注册 → API Keys → 创建<br>
+  · OpenAI：访问 platform.openai.com → 注册 → API Keys → 创建<br>
+  注意：API 服务通常是付费的，需要充值才能使用。
+</div>
+
+<h2>第二步：创建联系人</h2>
+<div class="step">
+  <p><strong>1.</strong> 点击左侧导航栏的 <strong>「通讯录」</strong>。</p>
+  <p><strong>2.</strong> 点击左侧列表上方的 <strong>「新建联系人」</strong>。</p>
+  <p><strong>3.</strong> 输入对方的名字，点击确定。</p>
+  <p><strong>4.</strong> 在右侧可以设置头像、添加备注。</p>
+</div>
+
+<div class="tip">
+  <strong>「自己」的联系人：</strong>通讯录第一个是你自己。可以修改自己的名字和头像，你在聊天中的头像和名字会同步更新。
+</div>
+
+<h2>第三步：录入聊天记录</h2>
+<div class="step">
+  <p><strong>1.</strong> 点击左侧导航栏的 <strong>「聊天」</strong>，在中间列表选择联系人。</p>
+  <p><strong>2.</strong> 在底部输入框中输入消息，按 <strong>Enter</strong> 键发送。</p>
+  <p><strong>3.</strong> <strong>己方消息</strong>（你说的）：直接输入后按 Enter，或点击绿色「发送」按钮。</p>
+  <p><strong>4.</strong> <strong>对方消息</strong>（对方说的）：点击白色「对方发送」按钮，输入内容后确认。</p>
+</div>
+
+<div class="tip">
+  <strong>提示：</strong>你可以手动输入双方的聊天记录，就像你在微信里看到的对话一样。
+  聊天气泡在右侧是你说的话，在左侧是对方说的话。
+</div>
+
+<h2>第四步：使用 AI 助手</h2>
+<div class="step">
+  <p><strong>1.</strong> 在聊天界面，点击底部按钮栏中的 <strong>「求助」</strong>按钮。</p>
+  <p><strong>2.</strong> 等待几秒，AI 会分析你们的对话内容，生成 <strong>3 条回复建议</strong>。</p>
+  <p><strong>3.</strong> 建议会显示在输入框上方。点击任意一条即可填入输入框。</p>
+  <p><strong>4.</strong> 如果不满意，点击 <strong>⟳</strong>（刷新）按钮重新生成。</p>
+  <p><strong>5.</strong> 如果当前情况特殊，点击 <strong>「策略」</strong>按钮，告诉 AI 你的想法（如"她不太开心"），AI 会据此调整。</p>
+</div>
+
+<h2>查看人物画像</h2>
+<div class="step">
+  <p>切换到 <strong>「通讯录」</strong>页面，点击任意联系人。</p>
+  <p>右侧会显示：</p>
+  <ul>
+    <li><strong>好感度：</strong>AI 根据聊天内容估算的好感度分数（-100 到 100）</li>
+    <li><strong>人格摘要：</strong>AI 分析的对方性格特点、兴趣偏好等</li>
+    <li><strong>备注：</strong>你可以添加私人笔记，不会影响 AI 判断</li>
+  </ul>
+  <p>点击右上角 <strong>「...」</strong>→ <strong>「查看详情」</strong>可以打开完整的画像报告。</p>
+  <p>在画像弹窗中点击 <strong>「重新分析」</strong>可以让 AI 重新分析最新对话。</p>
+</div>
+
+<h2>聊天消息操作</h2>
+<div class="step">
+  <p>在聊天记录上 <strong>右键单击</strong>，可以：</p>
+  <ul>
+    <li><strong>复制：</strong>将消息文本复制到剪贴板</li>
+    <li><strong>编辑内容：</strong>修改这条消息的文字</li>
+    <li><strong>删除：</strong>删除这条消息</li>
+    <li><strong>插入消息：</strong>在这条消息上面插入一条新的己方或对方消息</li>
+  </ul>
+</div>
+
+<h2>常见问题</h2>
+
+<div class="tip">
+  <strong>Q：点击求助后没有反应？</strong><br>
+  A：请确认已在设置中正确配置 API Key，并点击"测试连接"确认可用。
+</div>
+
+<div class="tip">
+  <strong>Q：为什么 AI 生成的回复不太合适？</strong><br>
+  A：可以点击「策略」按钮，告诉 AI 你的具体需求。比如"她今天情绪不好，帮我安慰她"或者"我想约她周末出去玩，帮我找个自然的方式提起"。
+</div>
+
+<div class="tip">
+  <strong>Q：好感度为什么不准确？</strong><br>
+  A：好感度是 AI 根据聊天内容估算的，仅供参考。你可以手动编辑画像数据来调整。
+</div>
+
+<div class="tip">
+  <strong>Q：软件数据存储在哪里？</strong><br>
+  A：所有数据存储在软件目录下的 <code>data/</code> 文件夹中。日志文件在 <code>logs/</code> 文件夹中。可以在设置中打开日志目录。
+</div>
+
+</body>
+</html>
